@@ -1,0 +1,20 @@
+{
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
+    "modulePathIgnorePatterns": [
+      "node_modules",
+      "coverage",
+      "doc"
+    ],
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ],
+    "reporters": [
+      "default"
+    ]
+  }
