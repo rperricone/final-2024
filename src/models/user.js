@@ -1,8 +1,9 @@
-const router = require('express').Router();
-router.post('/auth/signup', (req, res) => {
-  res.send('user');
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  password: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
+  roles: { type: [String], required: true },
 });
-router.post('/auth/login', (req, res) => {
-  res.send('user');
-});
-module.exports = router;
+
+module.exports = mongoose.model("users", userSchema);

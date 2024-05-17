@@ -12,6 +12,7 @@ function emailPassValidate(req, res, onlyPassword = false){
     }
     return true 
 }
+console.log(req)
     if (!req.body.email || !req.body.password) {
         res.status(400)
         res.json({ error: 'need email and password' })
@@ -19,7 +20,7 @@ function emailPassValidate(req, res, onlyPassword = false){
       }
       return true
 }
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', async (req, res) => {
   try {
     if (!emailPassValidate(req, res)){
         return
