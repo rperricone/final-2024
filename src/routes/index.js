@@ -4,8 +4,26 @@ const activity = require('./activity');
 const auth = require('./auth')
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
-// const user = require('../models/user');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../services/swagger');
+const swagger = require('../services/swagger');
+
 router.use(jsonParser)
+function errorHandler(err, req, res, next) {
+    console.log('error handler routes hit!', err.message)
+    if (res.headersSent) {
+      return next(err)
+    }
+    res.status(500)
+    res.render('error', { error: err })
+    next()
+  }
+router.use(errorHandler)
+
+
+// router.use('/api-docs', swaggerUi.serve);
+router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 router.use('/auth', auth)
 router.use( ticket);
 router.use( activity);

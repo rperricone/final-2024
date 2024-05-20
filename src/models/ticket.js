@@ -13,5 +13,5 @@ const ticketSchema = new mongoose.Schema({
 
 });
 
-
-module.exports = mongoose.model("token", ticketSchema);
+ticketSchema.index({'$**': 'text'});
+module.exports = mongoose.model("ticket", ticketSchema);

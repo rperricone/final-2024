@@ -9,4 +9,4 @@ const activitySchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("token", activitySchema);
+module.exports = mongoose.model("activity", activitySchema);

@@ -1,10 +1,10 @@
 const request = require("supertest");
 var jwt = require("jsonwebtoken");
 
-const server = require("../index");
-const testUtils = require("../test-utils");
+const server = require("../../../index");
+const testUtils = require("../../../test-utils");
 
-const User = require("../src/models/user");
+const User = require("../../../src/models/user");
 
 describe("/auth", () => {
   beforeAll(testUtils.connectDB);
