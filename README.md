@@ -1,13 +1,23 @@
+Update and delete on ticket are left I need to be completed i have the activity CRUD working.
+I have a database connection working and DAOS for Auth activity and ticket.
+I still need to do test coverage.
+
+
+--- 
+
 Your Final Project proposal is due. You should submit a link to a GitHub project that will house your submission. The project README should contain your project proposal. Your proposal should include:
+
+
+
 
 1. A description of the scenario your project is operating in.
 Everyday dog owners clean up after their pets. Some don't. 
 Home owner associations want to keep public areas clean.
 
-2. A description of what problem your project seeks to solve.
+1. A description of what problem your project seeks to solve.
  Provide a clean up service locations and status for dog waste. 
 
-3. A description of what the technical components of your project will be, including: the routes, the data models, any external data sources you'll use, etc.
+1. A description of what the technical components of your project will be, including: the routes, the data models, any external data sources you'll use, etc.
 Routes:
 - GET /ticket/:id - gets the ticket with this id 
   - Output contains ticketId,location.lat,location.lon,activity[],description,dateCreated
@@ -40,3 +50,11 @@ Routes:
  -  Week of May 20th - rough draft test and deploy to actual website
  -  Week of May 27th - polish and complete anything remaining. 
  -  Week of June 3rd - practice presentation. 
+
+Todo: 
+- move private key in services/token to environment .env file
+- move post /token/:id/activity to admin only or initial user.
+- move get /token to read all if admin, or just user submitted data if user
+- move POST /activity/:tokenId to admin only
+- move DELETE /activity/:activityId to admin.
+- 
