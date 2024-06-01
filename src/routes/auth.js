@@ -58,18 +58,20 @@ router.post('/login', async (req, res, next) => {
 
   return
 })
+//token.isUserLoggedInMiddleware.bind(token)
 router.post('/logout',token.isUserLoggedInMiddleware.bind(token), async (req, res, next) => {
   console.log('hit logout')
-  // try {
-  //   await authDAO.logout(req.headers.authorization)
-  // } catch (e) {
-  //   if (!res.headersSent) {
-  //     res.status(401)
-  //     res.json({ error: e.message })
-  //     next()
-  //   }
-  //   return
-  // }
+  try {
+    await authDAO.logout(req.headers.authorization)
+  } catch (e) {
+    if (!res.headersSent) {
+      res.status(401)
+      res.json({ error: e.message })
+      next()
+    }
+    return
+  }
+  res.json({ message: 'logged out' })
 })
 router.put('/password', async (req, res, next) => {
     if (!req.body.password || req.body.password === ''){

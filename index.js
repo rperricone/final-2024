@@ -1,10 +1,10 @@
 const express = require('express')
 const app = express()
-const routes = require('./src/routes')
+const {router} = require('./src/routes/index')
 const mongoose = require("mongoose");
 const port = process.env.PORT || 3000;
 
-app.use(routes)
+app.use(router)
 module.exports = app
 
 

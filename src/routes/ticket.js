@@ -42,23 +42,23 @@ router.post('/ticket',[token.isUserLoggedInMiddleware.bind(token),token.roleChec
    created 
   )
 })
-
-router.post('/ticket/:id/activity',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)],async (req,res)=>{
- try{
-  req.body.ticketId = req.params.id
-  req.body.userId = req.tokenPayload._id
-  const activity_id =  await activityDAO.create(req.body)
-  res.json(
-    activity_id
-  )
-  return
- }catch(err){
-    res.status(400)
-    res.json({error: err.message})
-    return
- }
+//shortcut for activity on a ticket, unecessary
+// router.post('/ticket/:id/activity',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)],async (req,res)=>{
+//  try{
+//   req.body.ticketId = req.params.id
+//   req.body.userId = req.tokenPayload._id
+//   const activity_id =  await activityDAO.create(req.body)
+//   res.json(
+//     activity_id
+//   )
+//   return
+//  }catch(err){
+//     res.status(400)
+//     res.json({error: err.message})
+//     return
+//  }
  
-})
+// })
 /**
  * this updates a ticket description and location
  */

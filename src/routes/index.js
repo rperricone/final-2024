@@ -15,7 +15,7 @@ function errorHandler(err, req, res, next) {
       return next(err)
     }
     res.status(500)
-    res.json({ error: err })
+    res.json({ error: err, stack: err.stack })
     next()
   }
 router.use(errorHandler)
@@ -30,4 +30,4 @@ router.use( activity);
 // router.use('/user', user);
 
 
-module.exports = router;
+module.exports = {router,errorHandler};
