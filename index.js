@@ -9,8 +9,15 @@ module.exports = app
 
 
 if (require.main === module) {
+  //mongodb://root:example@mongo:27017/
   mongoose
-  .connect("mongodb://127.0.0.1/final-perricone-2024", {})
+  .connect("mongodb://127.0.0.1:27017/final-perricone-2024", {
+   
+    authSource: "admin",
+    user: "root",
+    pass: "example",
+    useNewUrlParser: true
+})
   .then(() => {
     console.log("Connected to mongodb");
     app.listen(port, () => {

@@ -1,7 +1,7 @@
 const router = require('express').Router(); 
 const ticket = require('./ticket');
 const activity = require('./activity');
-const auth = require('./auth')
+const {auth} = require('./auth')
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
 const swaggerUi = require('swagger-ui-express');
@@ -15,7 +15,7 @@ function errorHandler(err, req, res, next) {
       return next(err)
     }
     res.status(500)
-    res.render('error', { error: err })
+    res.json({ error: err })
     next()
   }
 router.use(errorHandler)
@@ -23,8 +23,8 @@ router.use(errorHandler)
 
 // router.use('/api-docs', swaggerUi.serve);
 router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 router.use('/auth', auth)
+
 router.use( ticket);
 router.use( activity);
 // router.use('/user', user);

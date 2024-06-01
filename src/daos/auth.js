@@ -4,6 +4,7 @@ const saltRounds = 10
 const Auth = require('../models/user')
 const Token = require('../models/token')
 const { v4: uuidv4 } = require('uuid');
+
 module.exports = {}
 module.exports.hash = async (password) => {
   const salt = await bcrypt.genSalt(saltRounds)

@@ -4,13 +4,25 @@ const mongoose = require("mongoose");
 const models = [
   require("./src/models/token"),
   require("./src/models/user"),
+  require("./src/models/activity"),
+  require("./src/models/ticket"),
 ];
 
 module.exports = {};
 
 module.exports.connectDB = async () => {
-  await mongoose.connect(process.env.MONGO_TEST_URL, {});
+  await mongoose
+  .connect(process.env.MONGO_TEST_URL, {
+   
+    authSource: "admin",
+    user: "root",
+    pass: "example",
+    useUnifiedTopology: true,
+})
   await Promise.all(models.map((m) => m.syncIndexes()));
+};
+module.exports.closeDB = async () => {
+  await mongoose.connection.close();
 };
 
 module.exports.stopDB = async () => {

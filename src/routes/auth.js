@@ -3,6 +3,7 @@ const router = Router()
 const TokenService = require('../services/token')
 const authDAO = require('../daos/auth')
 let token = new TokenService()
+module.exports = {token}
 function emailPassValidate(req, res, onlyPassword = false){
     if(onlyPassword){
     if( !req.body.password){
@@ -12,7 +13,7 @@ function emailPassValidate(req, res, onlyPassword = false){
     }
     return true 
 }
-console.log(req)
+// console.log(req)
     if (!req.body.email || !req.body.password) {
         res.status(400)
         res.json({ error: 'need email and password' })
@@ -46,9 +47,6 @@ router.post('/login', async (req, res, next) => {
         return
     }
     const user = await authDAO.login(req.body)
-    if (user == null) {
-      throw new Error('User not found')
-    }
     const createToken = await token.createToken(user)
     res.json({ token: createToken })
   } catch (e) {
@@ -60,18 +58,18 @@ router.post('/login', async (req, res, next) => {
 
   return
 })
-router.use(token.isUserLoggedInMiddleware.bind(token))
-router.post('/logout', async (req, res, next) => {
-  try {
-    await authDAO.logout(req.body)
-  } catch (e) {
-    if (!res.headersSent) {
-      res.status(401)
-      res.json({ error: e.message })
-      next()
-    }
-    return
-  }
+router.post('/logout',token.isUserLoggedInMiddleware.bind(token), async (req, res, next) => {
+  console.log('hit logout')
+  // try {
+  //   await authDAO.logout(req.headers.authorization)
+  // } catch (e) {
+  //   if (!res.headersSent) {
+  //     res.status(401)
+  //     res.json({ error: e.message })
+  //     next()
+  //   }
+  //   return
+  // }
 })
 router.put('/password', async (req, res, next) => {
     if (!req.body.password || req.body.password === ''){
@@ -92,4 +90,4 @@ router.put('/password', async (req, res, next) => {
    } // {password: 'newPassword'} , Authorization : bearer token verified
 })
 
-module.exports = router
+module.exports = {...module.exports,auth:router,emailPassValidate}

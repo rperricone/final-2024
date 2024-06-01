@@ -17,18 +17,21 @@ const token = new TokenService()
  *       200:
  *         description: activity is found
  */
-router.get('/activity/:activityId', token.roleCheck.bind(token, [ADMIN], true), async (req, res) => {
+router.get('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], async (req, res) => {
   if (req.roleCheckPassed) {// get activity for admin , regardless of user
     try {
-      await activityDAO.getById(req.params.activityId)
+      const result = await activityDAO.getById(req.params.activityId)
+      res.json(result)
     } catch (err) {
       res.status(404)
       res.json({ error: err.message })
+      return
     }
     // if user, then get all activities for that user
   }else { 
     try {
-      await activityDAO.getAll(req.params.activityId, req.tokenPayload._id)
+      const result = await activityDAO.getAll(req.params.activityId, req.tokenPayload._id)
+      res.json(result)
     } catch (err) {
       res.status(404)
       res.json({ error: err.message })
@@ -41,11 +44,13 @@ router.get('/activity/:activityId', token.roleCheck.bind(token, [ADMIN], true), 
 //   res.sendStatus(404)
 // })
 
-router.post('/activity/:ticketId', async (req, res) => {
-  req.body.dateCreated = new Date()
-  req.body.userId = req.tokenPayload._id
-  req.body.ticketId = req.params.ticketId
+router.post('/activity/:ticketId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], 
+async (req, res) => {
+  
   try {
+    req.body.dateCreated = new Date()
+    req.body.userId = req.tokenPayload._id
+    req.body.ticketId = req.params.ticketId
     const created = await activityDAO.create(req.body)
     res.send(created)
     return
@@ -56,13 +61,19 @@ router.post('/activity/:ticketId', async (req, res) => {
   }
 
 })
-router.put('/activity/:activityId', async (req, res) => {
-  await activityDAO.update(req.params.activityId, req.body)
+router.put('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], async (req, res) => {
+  try{
+    const result = await activityDAO.update(req.params.activityId, req.body)
+    res.json(result)
+  } catch (err) {
+    res.status(400)
+    res.json({ error: err.message })
+  }
 });
-router.delete('/activity/:activityId', async (req, res) => {
+router.delete('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], async (req, res) => {
   try {
     let deleted = await activityDAO.deleteById(req.params.activityId)
-    console.log(deleted)
+    
     if (deleted.deletedCount == 0) {
       res.status(404)
       res.json({ success: false, error: 'delete id not found', id: req.params.activityId })
@@ -71,7 +82,7 @@ router.delete('/activity/:activityId', async (req, res) => {
     res.json({ success: true, id: req.params.activityId });
     return
   } catch (err) {
-    res.status(404)
+    res.status(400)
     res.json({ error: err.message })
   }
 

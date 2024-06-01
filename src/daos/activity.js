@@ -23,10 +23,16 @@ module.exports.getAllByTicket = (ticketId) => {
     }
     return Activity.find({ ticketId: ticketId }).sort({ dateCreated : -1 }).lean()
   }
-
+  module.exports.deleteAllByTicket = async (ticketId) => {
+    if (!mongoose.Types.ObjectId.isValid(ticketId)) {
+     throw new Error('Invalid ticket ID')
+    }
+    return  await Activity.deleteMany({ ticketId: ticketId })
+    
+  }
 module.exports.deleteById = async (activityId) => {
   if (!mongoose.Types.ObjectId.isValid(activityId)) {
-    return false
+    throw new Error('Invalid ticket ID')
   }
   return  await Activity.deleteOne({ _id: activityId })
   

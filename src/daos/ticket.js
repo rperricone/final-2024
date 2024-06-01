@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const Ticket = require('../models/ticket')
-
 const { v4: uuidv4 } = require('uuid');
 module.exports = {}
 module.exports.getAll = (userId = undefined) => {
@@ -18,13 +17,19 @@ module.exports.getById = (ticketId) => {
   return Ticket.findOne({ _id: ticketId }).lean()
 }
 
-module.exports.deleteById = async (ticketId) => {
+module.exports.updateById = (ticketId, updateObj) => {
   if (!mongoose.Types.ObjectId.isValid(ticketId)) {
-    return false
+    throw new Error('Invalid ticket ID')
   }
-  await Ticket.deleteOne({ _id: ticketId })
-  return true
+  return Ticket.updateOne({ _id: ticketId }, updateObj).lean()
 }
+
+module.exports.deleteById = async (ticketId) => {
+  
+  return Ticket.deleteOne({ _id: ticketId })
+  
+}
+
 
 module.exports.create = async (ticketData) => {
  // get location lat, lon, description, and userId from ticketData
