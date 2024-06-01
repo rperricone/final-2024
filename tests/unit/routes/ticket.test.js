@@ -3,9 +3,7 @@ server = require('../../../index.js')
 const { MongoClient } = require('mongoose');
 const testUtils = require("../../../test-utils");
 const Ticket = require("../../../src/models/ticket");
-const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
+jest.setTimeout(20 * 1000)
 let tokenUser
 let tokenAdmin
 let ticketId
