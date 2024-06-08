@@ -17,7 +17,7 @@ const token = new TokenService()
  *       200:
  *         description: activity is found
  */
-router.get('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], async (req, res) => {
+router.get('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],false)], async (req, res) => {
   if (req.roleCheckPassed) {// get activity for admin , regardless of user
     try {
       const result = await activityDAO.getById(req.params.activityId)
@@ -44,7 +44,7 @@ router.get('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),t
 //   res.sendStatus(404)
 // })
 
-router.post('/activity/:ticketId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], 
+router.post('/activity/:ticketId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"], false)], 
 async (req, res) => {
   
   try {
@@ -61,7 +61,7 @@ async (req, res) => {
   }
 
 })
-router.put('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], async (req, res) => {
+router.put('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],false)], async (req, res) => {
   try{
     const result = await activityDAO.update(req.params.activityId, req.body)
     res.json(result)
@@ -70,7 +70,7 @@ router.put('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),t
     res.json({ error: err.message })
   }
 });
-router.delete('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], async (req, res) => {
+router.delete('/activity/:activityId',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],false)], async (req, res) => {
   try {
     let deleted = await activityDAO.deleteById(req.params.activityId)
     

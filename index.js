@@ -13,10 +13,10 @@ if (require.main === module) {
   mongoose
   .connect("mongodb://127.0.0.1:27017/final-perricone-2024", {
    
-    authSource: "admin",
-    user: "root",
-    pass: "example",
-    useNewUrlParser: true
+    // authSource: "admin",
+    // user: "root",
+    // pass: "example",
+    // useNewUrlParser: true
 })
   .then(() => {
     console.log("Connected to mongodb");

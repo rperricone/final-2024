@@ -9,9 +9,13 @@ router.get('/ticket/:id',[token.isUserLoggedInMiddleware.bind(token)], async (re
   // get ticket data , add in activity data
   try{
   let ticketData = await ticketDAO.getById(req.params.id)
-  let activityData = await activityDAO.getAllByTicket(req.params.id)
-  ticketData.activity = activityData
-  res.json(ticketData)
+  if(ticketData){
+    let activityData = await activityDAO.getAllByTicket(req.params.id)
+    ticketData.activity = activityData 
+    res.json(ticketData)
+    return
+  }
+  throw new Error('ticket not found')
   return
   } catch(err){
     res.status(404)
@@ -22,7 +26,7 @@ router.get('/ticket/:id',[token.isUserLoggedInMiddleware.bind(token)], async (re
 });
 
 
-router.get('/ticket',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"], true)], async  (req,res) =>{
+router.get('/ticket',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"], false)], async  (req,res) =>{
   //get all tickets - admin only perhaps?
   const tickets = await ticketDAO.getAll()
   for(let ticket of tickets){
@@ -33,7 +37,7 @@ router.get('/ticket',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck
 })
 
 //create the ticket, post
-router.post('/ticket',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true,)],async (req,res)=>{
+router.post('/ticket',[token.isUserLoggedInMiddleware.bind(token)],async (req,res)=>{
   req.body.dateCreated = new Date()
   req.body.userId = req.tokenPayload._id
   console.log(req.body)
@@ -43,7 +47,7 @@ router.post('/ticket',[token.isUserLoggedInMiddleware.bind(token),token.roleChec
   )
 })
 //shortcut for activity on a ticket, unecessary
-// router.post('/ticket/:id/activity',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)],async (req,res)=>{
+// router.post('/ticket/:id/activity',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],false)],async (req,res)=>{
 //  try{
 //   req.body.ticketId = req.params.id
 //   req.body.userId = req.tokenPayload._id
@@ -65,14 +69,14 @@ router.post('/ticket',[token.isUserLoggedInMiddleware.bind(token),token.roleChec
 router.put('/ticket/:id',[token.isUserLoggedInMiddleware.bind(token)], async (req, res) => {
   //res.send(req.params.id);
   let result = await ticketDAO.updateById(req.params.id, req.body)
-  res.send(
+  res.json(
    result 
   )
 });
 /***
  * This deletes a ticket
  */
-router.delete('/ticket/:id',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],true)], async (req, res) => {
+router.delete('/ticket/:id',[token.isUserLoggedInMiddleware.bind(token),token.roleCheck.bind(token,["admin"],false)], async (req, res) => {
   let activity = await activityDAO.deleteAllByTicket( req.params.id)
   let result = await ticketDAO.deleteById(req.params.id)
   res.send(
