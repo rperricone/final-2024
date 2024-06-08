@@ -1,3 +1,18 @@
+# Self evaluation: 
+Your project README should have a self-evaluation of your approach and results, what you learned, and what you would like to do differently or improve upon. Explain what worked well and what didn't. The expectation is that this will not be a brief statement.
+
+For picking my problem, I looked for possible things an HOA would need, and noticed a bunch of emails around dog waste, I decided that would be a good place to start.
+
+I tried to get the routes working first, then I secured them using auth from previous lessons. I then made DAOs for each CRUD route and provided information the routes could use. 
+
+I tried tests, they timeout. They are the slowest tests ever. I think if I could do things over, I would use mocks instead of an in memory database since jest.fn is fast. The test passing are in a screenshot Screen Shot 2024-06-01 at 2.22.10 PM.png 
+
+Routes worked well putting in specifically what I was doing rather than a prefix (/ticket/:id rather that/:id) it was clearer and easier to read
+
+I would like to figure out where to send the env file. I put it in with the public code to let the tests/everything run, which I'm told you should never do, but because this is a proof of concept , and not a production code, I did that since I wanted some way for you to run. I looked up with some googling and found some ways to store with things like Vault and Infisical, I may try one of those in the future for secrets handling. 
+
+All in all, it was a good project, I think I can continue it and make it something my HOA can use with a front end, a login, and points on a map. 
+---
 Update and delete on ticket are left I need to be completed i have the activity CRUD working.
 I have a database connection working and DAOS for Auth activity and ticket.
 I still need to do test coverage.
